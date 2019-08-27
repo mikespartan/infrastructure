@@ -1,0 +1,10 @@
+
+[google]
+
+instance-1 ansible_host=35.224.37.164		
+instance-2 ansible_host=34.67.191.91
+
+[google:vars]
+
+ansible_user=mike
+ansible_ssh_private_key_file=/home/mike/.ssh/id_rsa.pub	

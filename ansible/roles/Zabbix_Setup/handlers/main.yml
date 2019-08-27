@@ -1,0 +1,10 @@
+---
+# handlers file for Zabbix_Setup
+
+  - name: Update
+    apt:
+       name: "*"
+       state: latest
+       upgrade: dist
+
+

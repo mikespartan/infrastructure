@@ -1,0 +1,10 @@
+---
+- name: Install Zabbix-Server
+  hosts: google
+  become: yes
+
+  roles:
+  - Zabbix_Setup
+ 
+     
+     

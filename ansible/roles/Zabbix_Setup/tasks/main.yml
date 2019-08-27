@@ -1,0 +1,53 @@
+---
+# tasks file for Zabbix_Setup
+
+
+# - name: Add Repo Zabbix
+#   apt_repository:
+#      repo  : deb https://repo.zabbix.com/zabbix/4.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.0-3+bionic_all.deb
+#      state : absent
+   
+# - name: Update
+#   apt:
+#      update_cache: yes
+
+ - name: wget
+   shell: wget https://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+bionic_all.deb && dpkg -i zabbix-release_3.4-1+bionic_all.deb
+   
+ - name: Update
+   apt:
+      update_cache: yes
+
+ - name: Install Zabbix
+   apt: 
+      name : "{{ packs }}"
+      state: latest
+      update_cache: yes
+
+ - name: Create User DB
+   postgresql_user:
+     db: "{{ namedb }}"
+     name: "{{ userdb }}"
+     password: "{{ passdb }}"
+     role_attr_flags: REPLICATION, LOGIN
+     
+ - name: Create DB
+   postgresql_db:
+     name: "{{ namedb }}"
+
+ - name: Set DBPassword
+   shell: echo "DBPassword="{{ passdb }}"" >> /etc/zabbix/zabbix_server.conf
+
+ - name: Set timezone in apache
+   shell: echo "date.timezone = Europe/Volgograd" >> /etc/php/7.2/apache2/php.ini
+
+ - name: Restart apache
+   service:
+     name: apache2
+     state: restarted
+
+ - name: start zabbix
+   service: 
+     name: zabbix
+     state: restarted
+     enabled: yes 

@@ -1,0 +1,15 @@
+---
+# vars file for Zabbix_Setup
+
+ packs:
+ - zabbix-server-pgsql
+ - zabbix-frontend-php
+
+ namedb:
+ - zabbix
+
+ userdb:
+ - user
+
+ passdb:
+ - password

@@ -1,0 +1,42 @@
+---
+# tasks file for Zabbix_Setup
+
+
+ - name: Add Repo Zabbix
+   apt_repository:
+      repo  : deb https://repo.zabbix.com/zabbix/3.0/debian/pool/main/z/zabbix-release/zabbix-release_3.0-2+stretch_all.deb
+      state : present
+   
+
+ - name: Install Zabbix
+   apt: 
+      name : "{{ packs }}"
+      state: latest
+#   notify: Update
+
+ - name: Create User DB
+   postgresql_user:
+     db: "{{ namedb }}"
+     name: "{{ userdb }}"
+     password: "{{ passdb }}"
+     
+ - name: Create DB
+   postgresql_db:
+     name: "{{ namedb }}"
+
+ - name: Set DBPassword
+   shell: echo "DBPassword="{{ passdb }}"" >> /etc/zabbix/zabbix_server.conf
+
+ - name: Set timezone in apache
+   shell: echo "date.timezone = Europe/Volgograd" >> /etc/php/7.2/apache2/php.ini
+
+ - name: Restart apache
+   service:
+     name: apache2
+     state: restarted
+
+ - name: start zabbix
+   service: 
+     name: zabbix
+     state: restarted
+     enabled: yes 
